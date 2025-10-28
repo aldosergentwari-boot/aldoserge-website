@@ -1,0 +1,215 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #f0f4f8;
+  color: #333;
+}
+
+header {
+  background: #0d6efd;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+nav li {
+  display: inline;
+  margin: 0 15px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.hero {
+  text-align: center;
+  padding: 4rem 1rem;
+  background: linear-gradient(to right, #0d6efd, #6610f2);
+  color: white;
+}
+
+button {
+  background: white;
+  color: #0d6efd;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button:hover {
+  background: #e0e0e0;
+}
+
+section {
+  padding: 2rem;
+  text-align: center;
+}
+
+footer {
+  background: #0d6efd;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 2rem;
+}
+.profile-pic {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 4px solid white;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+:root {
+  --blue: #007bff;
+  --purple: #6f42c1;
+  --light-bg: #f8f9fa;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--light-bg);
+  color: #333;
+}
+
+.hero {
+  background: linear-gradient(to right, var(--blue), var(--purple));
+  color: white;
+  text-align: center;
+  padding: 4rem 1rem;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+}
+@media (max-width: 768px) {
+  nav li {
+    display: block;
+    margin: 10px 0;
+  }
+
+  .hero {
+    padding: 2rem 1rem;
+  }
+
+  .profile-pic {
+    width: 120px;
+    height: 120px;
+  }
+
+  button {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+@media (max-width: 768px) {
+  nav li {
+    display: block;
+    margin: 10px 0;
+  }
+
+  .hero {
+    padding: 2rem 1rem;
+  }
+
+  .profile-pic {
+    width: 120px;
+    height: 120px;
+  }
+
+  button {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+button {
+  background: white;
+  color: #0d6efd;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease; /* Animation time */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background: #0d6efd;
+  color: white;
+  transform: scale(1.05); /* gatoya yikureho ikura */
+  box-shadow: 0 6px 15px rgba(13, 110, 253, 0.4);
+}
+
+
+
+/* Modal box style */
+.modal {
+  display: none; /* Ibanziriza kuba ihishe */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* background ya gicucu */
+}
+
+.modal-content {
+  background: white;
+  color: #333;
+  padding: 2rem;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  margin: 10% auto;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.4s ease;
+}
+
+.close {
+  float: right;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #888;
+}
+
+.close:hover {
+  color: #000;
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+#typedText {
+  border-right: 3px solid white;
+  padding-right: 5px;
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+#typedText {
+  color: #ffcc00;
+  font-weight: bold;
+  border-right: 3px solid #ffcc00;
+  font-size: 1.6rem;
+}
