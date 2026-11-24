@@ -1,83 +1,121 @@
+(() => {
+  "use strict";
 
-// Event listener yo kugenzura niba section ibonetse kuri screen
-const sections = document.querySelectorAll('.fade-in');
+  const menuToggle = document.getElementById("menuToggle");
+  const mainNav = document.getElementById("mainNav");
+  const scrollProgress = document.getElementById("scrollProgress");
+  const typedText = document.getElementById("typedText");
+  const year = document.getElementById("currentYear");
 
-const showSection = () => {
-  const triggerBottom = window.innerHeight * 0.85;
+  // Mobile navigation
+  const closeMenu = () => {
+    if (!menuToggle || !mainNav) return;
+    menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.setAttribute("aria-label", "Open navigation");
+    mainNav.classList.remove("is-open");
+    document.body.classList.remove("menu-open");
+  };
 
-  sections.forEach(section => {
-    const boxTop = section.getBoundingClientRect().top;
+  if (menuToggle && mainNav) {
+    menuToggle.addEventListener("click", () => {
+      const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+      menuToggle.setAttribute("aria-expanded", String(!isOpen));
+      menuToggle.setAttribute("aria-label", isOpen ? "Open navigation" : "Close navigation");
+      mainNav.classList.toggle("is-open", !isOpen);
+      document.body.classList.toggle("menu-open", !isOpen);
+    });
 
-    if (boxTop < triggerBottom) {
-      section.classList.add('show');
+    mainNav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeMenu();
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 680) closeMenu();
+    });
+  }
+
+  // Scroll progress indicator
+  const updateProgress = () => {
+    if (!scrollProgress) return;
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+    scrollProgress.style.width = progress + "%";
+  };
+
+  window.addEventListener("scroll", updateProgress, { passive: true });
+  updateProgress();
+
+  // Reveal content once it enters the viewport
+  const revealTargets = document.querySelectorAll(
+    ".section-label, .about-grid, .about-facts, .project-card, .skill-group, .skills-footnote, .contact-inner"
+  );
+
+  revealTargets.forEach((element) => element.classList.add("reveal"));
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries, currentObserver) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          currentObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealTargets.forEach((element) => observer.observe(element));
+  } else {
+    revealTargets.forEach((element) => element.classList.add("is-visible"));
+  }
+
+  // Lightweight typing effect
+  if (typedText) {
+    const phrases = [
+      "technology.",
+      "web development.",
+      "artificial intelligence.",
+      "cybersecurity."
+    ];
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reducedMotion) {
+      typedText.textContent = phrases[0];
     } else {
-      section.classList.remove('show');
+      let phraseIndex = 0;
+      let characterIndex = 0;
+      let deleting = false;
+
+      const typeLoop = () => {
+        const phrase = phrases[phraseIndex];
+
+        if (!deleting) {
+          characterIndex += 1;
+          typedText.textContent = phrase.slice(0, characterIndex);
+
+          if (characterIndex === phrase.length) {
+            deleting = true;
+            window.setTimeout(typeLoop, 1450);
+            return;
+          }
+        } else {
+          characterIndex -= 1;
+          typedText.textContent = phrase.slice(0, characterIndex);
+
+          if (characterIndex === 0) {
+            deleting = false;
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+          }
+        }
+
+        window.setTimeout(typeLoop, deleting ? 38 : 78);
+      };
+
+      window.setTimeout(typeLoop, 500);
     }
-  });
-};
-
-window.addEventListener('scroll', showSection);
-showSection();
-
-
-
-const learnBtn = document.getElementById("learnMore");
-const modal = document.getElementById("infoModal");
-const closeBtn = document.querySelector(".close");
-
-learnBtn.addEventListener("click", () => {
-  modal.style.display = "block";
-});
-
-closeBtn.addEventListener("click", () => {
-  modal.style.display = "none";
-});
-
-// Iyo ukande hanze ya modal, irafunga
-window.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    modal.style.display = "none";
   }
-});
-// ===== Typing Animation Effect =====
-const textArray = [ 
-  " Aldo Serge NTWARI,",
-  " DJ & Web Developer,",
-  " Technology Enthusiast,",
-  " Creative Thinker 🎧,"
-];
 
-let typingDelay = 150;   // Igihe hagati y’inyuguti n’indi (ms)
-let erasingDelay = 80;   // Igihe cyo gusiba inyuguti imwe (ms)
-let newTextDelay = 1500; // Pause mbere yo gutangira andi magambo
-let textIndex = 0;
-let charIndex = 0;
-
-const typedTextSpan = document.getElementById("typedText");
-
-function type() {
-  if (charIndex < textArray[textIndex].length) {
-    typedTextSpan.textContent += textArray[textIndex].charAt(charIndex);
-    charIndex++;
-    setTimeout(type, typingDelay);
-  } else {
-    setTimeout(erase, newTextDelay);
-  }
-}
-
-function erase() {
-  if (charIndex > 0) {
-    typedTextSpan.textContent = textArray[textIndex].substring(0, charIndex - 1);
-    charIndex--;
-    setTimeout(erase, erasingDelay);
-  } else {
-    textIndex++;
-    if (textIndex >= textArray.length) textIndex = 0;
-    setTimeout(type, typingDelay + 500);
-  }
-}
-
-// Tangira animation iyo page ifungutse
-document.addEventListener("DOMContentLoaded", () => {
-  if (textArray.length) setTimeout(type, newTextDelay + 250);
-});
+  if (year) year.textContent = new Date().getFullYear();
+})();
